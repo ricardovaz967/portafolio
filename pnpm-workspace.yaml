@@ -1,0 +1,16 @@
+packages:
+  - "."
+
+allowBuilds:
+  '@parcel/watcher': true
+  '@sentry/cli': true
+  '@swc/core': true
+  sharp: true
+  unrs-resolver: true
+
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - "@sentry/cli"
+  - "@swc/core"
+  - "sharp"
+  - "unrs-resolver"
