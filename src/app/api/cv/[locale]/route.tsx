@@ -19,9 +19,15 @@ export async function GET(_request: Request, { params }: RouteProps) {
     return NextResponse.json({ error: "Idioma no disponible" }, { status: 404 });
   }
 
-  const content = await getPortfolioContent(locale as Locale);
-  const photo = await loadResumePhoto();
-  const pdf = await renderToBuffer(<ResumeDocument content={content} photo={photo} locale={locale as Locale} />);
+  let pdf: Buffer;
+  try {
+    const content = await getPortfolioContent(locale as Locale);
+    const photo = await loadResumePhoto();
+    pdf = await renderToBuffer(<ResumeDocument content={content} photo={photo} locale={locale as Locale} />);
+  } catch (error) {
+    console.error("CV PDF failed", error);
+    return NextResponse.json({ error: "No se pudo generar el CV" }, { status: 500 });
+  }
   const filename = `ricardo-vazquez-dominguez-${locale}.pdf`;
 
   return new NextResponse(new Uint8Array(pdf), {
